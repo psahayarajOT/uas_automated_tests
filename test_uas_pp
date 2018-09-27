@@ -1,0 +1,7 @@
+
+#!/bin/bash
+
+#Runs the US User Agreement Service tests in Pre-Production
+env_file_name="UAS_PP.postman_environment.json"
+echo "running tests for environment" "$env_file_name"
+docker run -t -v `pwd`/uas_auto_tests:/etc/newman docker.otenv.com/ot_newman:10 run Automated_UAS.postman_collection.json -e "$env_file_name";

@@ -1,0 +1,60 @@
+{
+	"info": {
+		"_postman_id": "f5384861-a68f-421d-aa95-42dd45dd8a23",
+		"name": "Automated_UAS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create user agreement",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "46bed6e2-fe5d-4ed7-be1c-2099adfb1369",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"pm.test(\"Verify status code indicates success\", function () {",
+							"    pm.expect(pm.response.code).to.eql(200);",
+							"});",
+							"pm.test(\"Verify agreement id is returned\", function (){",
+							"   pm.expect(jsonData.agreementId).to.not.eql(null); ",
+							"});",
+							"",
+							"postman.setEnvironmentVariable(jsonData.agreementId, \"agreemenendID\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"rid\":117730,\n   \"restaurantName\":\"JT Test restaurant\",\n   \"locale\": \"en-US\",\n   \"legalEntity\":\"JT TestEntity, LLC.\",\n   \"opportunityId\":\"3700c000001aJV2\",\n   \"quoteId\":\"3700c000001aJV2\",\n   \"dealType\" : \"System Change\",\n   \"feeNotes\" : \"checking the notes in the agreement flow\",\n   \"client\":{\n      \"email\":\"agreeOne@mailinator.com\",\n      \"firstName\":\"Agreed\",\n      \"lastName\":\"Again\"\n   },\n   \"contractOwner\":{\n      \"firstName\":\"Julia\",\n      \"lastName\":\"Testing UAS\",\n      \"email\":\"jtseyref@opentable.com\",\n      \"phone\":\"415-344-4200\"\n   },\n   \"pricing\":[ \n      {\n         \"productName\":\"OpenTable System (Guest Center)\",\n         \"productCode\":\"SYS010\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":10000,\n         \"totalPrice\":10.0,\n         \"discount\":100000.0,\n         \"temporaryDiscountAmount\":100000.0,\n         \"temporaryDiscountMonths\":357,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"annual\"\n      },\n       {\n         \"productName\":\"Gifts29\",\n         \"productCode\":\"ABC15\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":20.0,\n         \"discount\":25.0,\n         \"totalPrice\":-5.0,\n         \"temporaryDiscountAmount\":15.0,\n         \"temporaryDiscountMonths\":2,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"monthly\"\n      },\n       {\n         \"productName\":\"Training\",\n         \"productCode\":\"SYS013\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":800,\n         \"totalPrice\":800.0,\n         \"discount\":799.0,\n         \"temporaryDiscountAmount\":799.0,\n         \"temporaryDiscountMonths\":1,\n         \"feeType\" : \"installtion\",\n         \"billingRecurrence\" : \"once\"\n      }\n   ]\n}"
+				},
+				"url": {
+					"raw": "{{orchestrator_host}}/orchestration/v1/agreements/",
+					"host": [
+						"{{orchestrator_host}}"
+					],
+					"path": [
+						"orchestration",
+						"v1",
+						"agreements",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
