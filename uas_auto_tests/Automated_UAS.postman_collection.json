@@ -24,6 +24,13 @@
 							"});",
 							"",
 							"pm.environment.set(\"agreementId\", jsonData.agreementId);",
+							"",
+							"if(pm.environment.get(\"orchestrator_host\") === 'http://rlc-orchestration-service-prod-sc.otenv.com'){",
+							"    postman.setNextRequest(\"Discovery: user-agreement-service\");",
+							"}",
+							"else {",
+							"    postman.setNextRequest(\"View agreement details\");",
+							"}",
 							""
 						],
 						"type": "text/javascript"
@@ -52,6 +59,52 @@
 						"v1",
 						"agreements",
 						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Discovery: user-agreement-service",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e4b9510c-093b-4e6e-b4c5-d823353b20e9",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"uas_host\", jsonData.results[0].serviceUri);",
+							"",
+							"pm.test(\"URI is for UAS\", function () {",
+							"    pm.expect(jsonData.results[0].serviceType).to.eql('rlc-user-agreement-service');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept-Encoding",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{discovery}}/announcement?serviceType=rlc-user-agreement-service",
+					"host": [
+						"{{discovery}}"
+					],
+					"path": [
+						"announcement"
+					],
+					"query": [
+						{
+							"key": "serviceType",
+							"value": "rlc-user-agreement-service"
+						}
 					]
 				}
 			},
@@ -768,6 +821,59 @@
 						"v1",
 						"agreements",
 						"{{agreementId_new}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cannot create an agreement for an un-supported locale",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8c406cd9-4c81-45a7-9802-fcb69313c709",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"pm.test(\"Verify status code indicates the action is not allowed\", function () {",
+							"    pm.expect(pm.response.code).to.eql(400);",
+							"});",
+							"",
+							"pm.test(\"Verify errorCode states the agreement cannot be created due to missing T&C's\", function (){",
+							"   pm.expect(jsonData.errorCode).to.eql(\"terms_are_not_available_for_this_locale\"); ",
+							"});",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"rid\":{{uas_auto_rid}},\n   \"restaurantName\":\"{{uas_auto_rest_name}}\",\n   \"locale\": \"ru-mo\",\n   \"legalEntity\":\"JT TestEntity, LLC.\",\n   \"opportunityId\":\"3700c000001aJV2\",\n   \"quoteId\":\"3700c000001aJV2\",\n   \"dealType\" : \"System Change\",\n   \"feeNotes\" : \"checking the notes in the agreement flow\",\n   \"client\":{\n      \"email\":\"uas.tester@mailinator.com\",\n      \"firstName\":\"Uas\",\n      \"lastName\":\"Test\"\n   },\n   \"contractOwner\":{\n      \"firstName\":\"OpenTable\",\n      \"lastName\":\"Testing UAS\",\n      \"email\":\"otuas.test@opentable.com\",\n      \"phone\":\"415-344-4200\"\n   },\n   \"pricing\":[ \n      {\n         \"productName\":\"OpenTable System (Guest Center)\",\n         \"productCode\":\"SYS010\",\n         \"currencyCode\":\"MDL\",\n         \"listPrice\":10000,\n         \"totalPrice\":10.0,\n         \"discount\":100000.0,\n         \"temporaryDiscountAmount\":100000.0,\n         \"temporaryDiscountMonths\":357,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"annual\"\n      },\n       {\n         \"productName\":\"Gifts29\",\n         \"productCode\":\"ABC15\",\n         \"currencyCode\":\"MDL\",\n         \"listPrice\":20.0,\n         \"discount\":25.0,\n         \"totalPrice\":-5.0,\n         \"temporaryDiscountAmount\":15.0,\n         \"temporaryDiscountMonths\":2,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"monthly\"\n      },\n       {\n         \"productName\":\"Training\",\n         \"productCode\":\"SYS013\",\n         \"currencyCode\":\"MDL\",\n         \"listPrice\":800,\n         \"totalPrice\":800.0,\n         \"discount\":799.0,\n         \"temporaryDiscountAmount\":799.0,\n         \"temporaryDiscountMonths\":1,\n         \"feeType\" : \"installtion\",\n         \"billingRecurrence\" : \"once\"\n      }\n   ]\n}"
+				},
+				"url": {
+					"raw": "{{orchestrator_host}}/orchestration/v1/agreements/",
+					"host": [
+						"{{orchestrator_host}}"
+					],
+					"path": [
+						"orchestration",
+						"v1",
+						"agreements",
+						""
 					]
 				}
 			},
