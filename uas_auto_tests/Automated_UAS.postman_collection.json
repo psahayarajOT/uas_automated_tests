@@ -109,6 +109,18 @@
 							"",
 							"pm.test(\"Verify Pricing contains 3 products\", function (){",
 							"   pm.expect(jsonData.data.pricing.length).to.eql(3); ",
+							"});",
+							"",
+							"pm.test(\"Verify currency is USD on the 1st product\", function (){",
+							"   pm.expect(jsonData.data.pricing[0].currencyCode).to.eql(\"USD\"); ",
+							"});",
+							"",
+							"pm.test(\"Verify currency is USD on the 2nd product\", function (){",
+							"   pm.expect(jsonData.data.pricing[1].currencyCode).to.eql(\"USD\"); ",
+							"});",
+							"",
+							"pm.test(\"Verify currency is USD on the 3rd product\", function (){",
+							"   pm.expect(jsonData.data.pricing[2].currencyCode).to.eql(\"USD\"); ",
 							"});"
 						],
 						"type": "text/javascript"
@@ -239,6 +251,14 @@
 							"",
 							"pm.test(\"Verify Pricing has been updated and now has only 2 products\", function (){",
 							"   pm.expect(jsonData.data.pricing.length).to.eql(2); ",
+							"});",
+							"",
+							"pm.test(\"Verify currency is USD on the 1st product\", function (){",
+							"   pm.expect(jsonData.data.pricing[0].currencyCode).to.eql(\"USD\"); ",
+							"});",
+							"",
+							"pm.test(\"Verify currency is USD on the 2nd product\", function (){",
+							"   pm.expect(jsonData.data.pricing[1].currencyCode).to.eql(\"USD\"); ",
 							"});"
 						],
 						"type": "text/javascript"
@@ -383,6 +403,58 @@
 						"v1",
 						"agreements",
 						"{{agreementId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cannot change state to termsAccepted for non-pricingConfirmed state",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa160d4e-aa28-461c-af52-8e7ea6584a79",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"pm.test(\"Verify status code indicates an illegal attempt to change the state\", function () {",
+							"    pm.expect(pm.response.code).to.eql(400);",
+							"});",
+							"",
+							"pm.test(\"Verify the error\", function (){",
+							"   pm.expect(jsonData.errorCode).to.eql(\"pricing_not_yet_accepted\"); ",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"disabled": false,
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"data\":\n{\"agreementState\": \"termsAccepted\"}\n}"
+				},
+				"url": {
+					"raw": "{{uas_host}}/user-agreement/v1/agreements/{{agreementId_new}}",
+					"host": [
+						"{{uas_host}}"
+					],
+					"path": [
+						"user-agreement",
+						"v1",
+						"agreements",
+						"{{agreementId_new}}"
 					]
 				}
 			},
@@ -655,6 +727,18 @@
 							"",
 							"pm.test(\"Verify Pricing section has 3 products\", function() {",
 							"    pm.expect(jsonData.data.pricing.length).to.eql(3);",
+							"});",
+							"",
+							"pm.test(\"Verify currency is USD on the 1st product\", function (){",
+							"   pm.expect(jsonData.data.pricing[0].currencyCode).to.eql(\"USD\"); ",
+							"});",
+							"",
+							"pm.test(\"Verify currency is USD on the 2nd product\", function (){",
+							"   pm.expect(jsonData.data.pricing[1].currencyCode).to.eql(\"USD\"); ",
+							"});",
+							"",
+							"pm.test(\"Verify currency is USD on the 3rd product\", function (){",
+							"   pm.expect(jsonData.data.pricing[2].currencyCode).to.eql(\"USD\"); ",
 							"});"
 						],
 						"type": "text/javascript"
