@@ -11,18 +11,19 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "46bed6e2-fe5d-4ed7-be1c-2099adfb1369",
+						"id": "8c406cd9-4c81-45a7-9802-fcb69313c709",
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
 							"",
 							"pm.test(\"Verify status code indicates success\", function () {",
 							"    pm.expect(pm.response.code).to.eql(200);",
 							"});",
+							"",
 							"pm.test(\"Verify agreement id is returned\", function (){",
 							"   pm.expect(jsonData.agreementId).to.not.eql(null); ",
 							"});",
 							"",
-							"postman.setEnvironmentVariable(jsonData.agreementId, \"agreemenendID\");",
+							"pm.environment.set(\"agreementId\", jsonData.agreementId);",
 							""
 						],
 						"type": "text/javascript"
@@ -39,7 +40,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n   \"rid\":117730,\n   \"restaurantName\":\"JT Test restaurant\",\n   \"locale\": \"en-US\",\n   \"legalEntity\":\"JT TestEntity, LLC.\",\n   \"opportunityId\":\"3700c000001aJV2\",\n   \"quoteId\":\"3700c000001aJV2\",\n   \"dealType\" : \"System Change\",\n   \"feeNotes\" : \"checking the notes in the agreement flow\",\n   \"client\":{\n      \"email\":\"agreeOne@mailinator.com\",\n      \"firstName\":\"Agreed\",\n      \"lastName\":\"Again\"\n   },\n   \"contractOwner\":{\n      \"firstName\":\"Julia\",\n      \"lastName\":\"Testing UAS\",\n      \"email\":\"jtseyref@opentable.com\",\n      \"phone\":\"415-344-4200\"\n   },\n   \"pricing\":[ \n      {\n         \"productName\":\"OpenTable System (Guest Center)\",\n         \"productCode\":\"SYS010\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":10000,\n         \"totalPrice\":10.0,\n         \"discount\":100000.0,\n         \"temporaryDiscountAmount\":100000.0,\n         \"temporaryDiscountMonths\":357,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"annual\"\n      },\n       {\n         \"productName\":\"Gifts29\",\n         \"productCode\":\"ABC15\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":20.0,\n         \"discount\":25.0,\n         \"totalPrice\":-5.0,\n         \"temporaryDiscountAmount\":15.0,\n         \"temporaryDiscountMonths\":2,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"monthly\"\n      },\n       {\n         \"productName\":\"Training\",\n         \"productCode\":\"SYS013\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":800,\n         \"totalPrice\":800.0,\n         \"discount\":799.0,\n         \"temporaryDiscountAmount\":799.0,\n         \"temporaryDiscountMonths\":1,\n         \"feeType\" : \"installtion\",\n         \"billingRecurrence\" : \"once\"\n      }\n   ]\n}"
+					"raw": "{\n   \"rid\":{{uas_auto_rid}},\n   \"restaurantName\":\"{{uas_auto_rest_name}}\",\n   \"locale\": \"en-US\",\n   \"legalEntity\":\"JT TestEntity, LLC.\",\n   \"opportunityId\":\"3700c000001aJV2\",\n   \"quoteId\":\"3700c000001aJV2\",\n   \"dealType\" : \"System Change\",\n   \"feeNotes\" : \"checking the notes in the agreement flow\",\n   \"client\":{\n      \"email\":\"uas.tester@mailinator.com\",\n      \"firstName\":\"Uas\",\n      \"lastName\":\"Test\"\n   },\n   \"contractOwner\":{\n      \"firstName\":\"OpenTable\",\n      \"lastName\":\"Testing UAS\",\n      \"email\":\"otuas.test@opentable.com\",\n      \"phone\":\"415-344-4200\"\n   },\n   \"pricing\":[ \n      {\n         \"productName\":\"OpenTable System (Guest Center)\",\n         \"productCode\":\"SYS010\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":10000,\n         \"totalPrice\":10.0,\n         \"discount\":100000.0,\n         \"temporaryDiscountAmount\":100000.0,\n         \"temporaryDiscountMonths\":357,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"annual\"\n      },\n       {\n         \"productName\":\"Gifts29\",\n         \"productCode\":\"ABC15\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":20.0,\n         \"discount\":25.0,\n         \"totalPrice\":-5.0,\n         \"temporaryDiscountAmount\":15.0,\n         \"temporaryDiscountMonths\":2,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"monthly\"\n      },\n       {\n         \"productName\":\"Training\",\n         \"productCode\":\"SYS013\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":800,\n         \"totalPrice\":800.0,\n         \"discount\":799.0,\n         \"temporaryDiscountAmount\":799.0,\n         \"temporaryDiscountMonths\":1,\n         \"feeType\" : \"installtion\",\n         \"billingRecurrence\" : \"once\"\n      }\n   ]\n}"
 				},
 				"url": {
 					"raw": "{{orchestrator_host}}/orchestration/v1/agreements/",
@@ -51,6 +52,638 @@
 						"v1",
 						"agreements",
 						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View agreement details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa160d4e-aa28-461c-af52-8e7ea6584a79",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"pm.test(\"Verify status code indicates success\", function () {",
+							"    pm.expect(pm.response.code).to.eql(200);",
+							"});",
+							"",
+							"pm.test(\"Verify agreement id is present\", function (){",
+							"   pm.expect(jsonData.agreementId).to.not.eql(null); ",
+							"});",
+							"",
+							"pm.test(\"Verify agreement is in Created state\", function (){",
+							"   pm.expect(jsonData.data.agreementState).to.eql(\"agreementCreated\"); ",
+							"});",
+							"",
+							"pm.test(\"Verify locale is en-US\", function (){",
+							"   pm.expect(jsonData.locale).to.eql(\"en-US\"); ",
+							"});",
+							"",
+							"pm.test(\"Verify the contract has not been signed yet\", function (){",
+							"   pm.expect(jsonData.isSigned).to.eql(false); ",
+							"});",
+							"",
+							"pm.test(\"Verify agreement has an expiration date\", function (){",
+							"   pm.expect(jsonData.expiryDate).to.not.eql(null); ",
+							"});",
+							"",
+							"pm.test(\"Verify agreement has T&C's\", function (){",
+							"   pm.expect(jsonData.termsAndConditions).to.not.eql(null); ",
+							"});",
+							"",
+							"pm.test(\"Verify Restaurant Name is not empty\", function (){",
+							"   pm.expect(jsonData.data.restaurantName).to.not.eql(null); ",
+							"});",
+							"",
+							"pm.test(\"Verify Legal Entity is not empty\", function (){",
+							"   pm.expect(jsonData.data.legalEntity).to.not.eql(null); ",
+							"});",
+							"",
+							"pm.test(\"Verify Pricing section is not empty\", function (){",
+							"   pm.expect(jsonData.data.pricing).to.not.eql(null); ",
+							"});",
+							"",
+							"pm.test(\"Verify Pricing contains 3 products\", function (){",
+							"   pm.expect(jsonData.data.pricing.length).to.eql(3); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"disabled": false
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"agreementId\": \"4a6c9652-ce8d-4e6e-8d79-51295c3ce606\",\n   \"rid\":138,\n   \"restaurantName\":\"TR 138\",\n   \"locale\": \"en-US\",\n   \"legalEntity\":\"TR138, Inc.\",\n   \"opportunityId\":\"5200c000001kJV2\",\n   \"quoteId\":\"5200c000001kJV2\",\n   \"dealType\" : \"System Change\",\n   \"feeNotes\" : \"new notes $%^#&@*!(@)#_$+:>?<~`\",\n   \"client\":{\n      \"email\":\"agreeOne@mailinator.com\",\n      \"firstName\":\"AgreeOne\",\n      \"lastName\":\"WithUs\"\n   },\n   \"contractOwner\":{\n      \"firstName\":\"Julia\",\n      \"lastName\":\"Tseyref\",\n      \"email\":\"jtseyref@opentable.com\",\n      \"phone\":\"415-3444200\"\n   },\n   \"pricing\":[\n      {\n         \"productName\":\"OpenTable System (Guest Center)\",\n         \"productCode\":\"SYS010\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":19999.0,\n         \"totalPrice\":19900.0,\n         \"discount\":0,\n         \"temporaryDiscountAmount\":100.0,\n         \"temporaryDiscountMonths\":36,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"annual\"\n      },\n            {\n         \"productName\":\"Gifts\",\n         \"productCode\":\"ABC12\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":20.0,\n         \"discount\":5.0,\n         \"totalPrice\":15.0,\n         \"temporaryDiscountAmount\":15.0,\n         \"temporaryDiscountMonths\":2,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"monthly\"\n      }\n   ]\n}"
+				},
+				"url": {
+					"raw": "{{uas_host}}/user-agreement/v1/agreements/{{agreementId}}",
+					"host": [
+						"{{uas_host}}"
+					],
+					"path": [
+						"user-agreement",
+						"v1",
+						"agreements",
+						"{{agreementId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Agreement",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8c406cd9-4c81-45a7-9802-fcb69313c709",
+						"exec": [
+							"pm.test(\"Verify status code indicates success\", function () {",
+							"    pm.expect(pm.response.code).to.eql(204);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"rid\":{{uas_auto_rid}},\n   \"restaurantName\":\"{{uas_auto_rest_name}}\",\n   \"locale\": \"en-US\",\n   \"legalEntity\":\"JT TestEntity, LLC.\",\n   \"opportunityId\":\"3700c000001aJV2\",\n   \"quoteId\":\"3700c000001aJV2\",\n   \"dealType\" : \"System Change\",\n   \"feeNotes\" : \"checking the notes in the agreement flow\",\n   \"client\":{\n      \"email\":\"uas.tester@mailinator.com\",\n      \"firstName\":\"Uas\",\n      \"lastName\":\"Test\"\n   },\n   \"contractOwner\":{\n      \"firstName\":\"OpenTable\",\n      \"lastName\":\"Testing UAS\",\n      \"email\":\"otuas.test@opentable.com\",\n      \"phone\":\"415-344-4203\"\n   },\n   \"pricing\":[ \n      {\n         \"productName\":\"OpenTable System (Guest Center)\",\n         \"productCode\":\"SYS010\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":13000,\n         \"totalPrice\":13.0,\n         \"discount\":130000.0,\n         \"temporaryDiscountAmount\":100000.0,\n         \"temporaryDiscountMonths\":24,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"annual\"\n      },\n        {\n         \"productName\":\"Training\",\n         \"productCode\":\"SYS013\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":800,\n         \"totalPrice\":800.0,\n         \"discount\":799.0,\n         \"temporaryDiscountAmount\":799.0,\n         \"temporaryDiscountMonths\":1,\n         \"feeType\" : \"installtion\",\n         \"billingRecurrence\" : \"once\"\n      }\n   ]\n}"
+				},
+				"url": {
+					"raw": "{{orchestrator_host}}/orchestration/v1/agreements/{{agreementId}}",
+					"host": [
+						"{{orchestrator_host}}"
+					],
+					"path": [
+						"orchestration",
+						"v1",
+						"agreements",
+						"{{agreementId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View updated agreement details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa160d4e-aa28-461c-af52-8e7ea6584a79",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"pm.test(\"Verify status code indicates success\", function () {",
+							"    pm.expect(pm.response.code).to.eql(200);",
+							"});",
+							"",
+							"pm.test(\"Verify agreement id is present\", function (){",
+							"   pm.expect(jsonData.agreementId).to.not.eql(null); ",
+							"});",
+							"",
+							"pm.test(\"Verify agreement is in the Updated state\", function (){",
+							"   pm.expect(jsonData.data.agreementState).to.eql(\"agreementUpdated\"); ",
+							"});",
+							"",
+							"pm.test(\"Verify locale is en-US\", function (){",
+							"   pm.expect(jsonData.locale).to.eql(\"en-US\"); ",
+							"});",
+							"",
+							"pm.test(\"Verify the contract has not been signed yet\", function (){",
+							"   pm.expect(jsonData.isSigned).to.eql(false); ",
+							"});",
+							"",
+							"pm.test(\"Verify agreement has an expiration date\", function (){",
+							"   pm.expect(jsonData.expiryDate).to.not.eql(null); ",
+							"});",
+							"",
+							"pm.test(\"Verify agreement has T&C's\", function (){",
+							"   pm.expect(jsonData.termsAndConditions).to.not.eql(null); ",
+							"});",
+							"",
+							"pm.test(\"Verify Restaurant Name is not empty\", function (){",
+							"   pm.expect(jsonData.data.restaurantName).to.not.eql(null); ",
+							"});",
+							"",
+							"pm.test(\"Verify Legal Entity is not empty\", function (){",
+							"   pm.expect(jsonData.data.legalEntity).to.not.eql(null); ",
+							"});",
+							"",
+							"pm.test(\"Verify Pricing section is not empty\", function (){",
+							"   pm.expect(jsonData.data.pricing).to.not.eql(null); ",
+							"});",
+							"",
+							"pm.test(\"Verify Pricing has been updated and now has only 2 products\", function (){",
+							"   pm.expect(jsonData.data.pricing.length).to.eql(2); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"disabled": false,
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"agreementId\": \"4a6c9652-ce8d-4e6e-8d79-51295c3ce606\",\n   \"rid\":138,\n   \"restaurantName\":\"TR 138\",\n   \"locale\": \"en-US\",\n   \"legalEntity\":\"TR138, Inc.\",\n   \"opportunityId\":\"5200c000001kJV2\",\n   \"quoteId\":\"5200c000001kJV2\",\n   \"dealType\" : \"System Change\",\n   \"feeNotes\" : \"new notes $%^#&@*!(@)#_$+:>?<~`\",\n   \"client\":{\n      \"email\":\"agreeOne@mailinator.com\",\n      \"firstName\":\"AgreeOne\",\n      \"lastName\":\"WithUs\"\n   },\n   \"contractOwner\":{\n      \"firstName\":\"Julia\",\n      \"lastName\":\"Tseyref\",\n      \"email\":\"jtseyref@opentable.com\",\n      \"phone\":\"415-3444200\"\n   },\n   \"pricing\":[\n      {\n         \"productName\":\"OpenTable System (Guest Center)\",\n         \"productCode\":\"SYS010\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":19999.0,\n         \"totalPrice\":19900.0,\n         \"discount\":0,\n         \"temporaryDiscountAmount\":100.0,\n         \"temporaryDiscountMonths\":36,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"annual\"\n      },\n            {\n         \"productName\":\"Gifts\",\n         \"productCode\":\"ABC12\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":20.0,\n         \"discount\":5.0,\n         \"totalPrice\":15.0,\n         \"temporaryDiscountAmount\":15.0,\n         \"temporaryDiscountMonths\":2,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"monthly\"\n      }\n   ]\n}"
+				},
+				"url": {
+					"raw": "{{uas_host}}/user-agreement/v1/agreements/{{agreementId}}",
+					"host": [
+						"{{uas_host}}"
+					],
+					"path": [
+						"user-agreement",
+						"v1",
+						"agreements",
+						"{{agreementId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Expire previous agreement by creating the new one with the same details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8c406cd9-4c81-45a7-9802-fcb69313c709",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"pm.test(\"Verify status code indicates success\", function () {",
+							"    pm.expect(pm.response.code).to.eql(200);",
+							"});",
+							"",
+							"pm.test(\"Verify agreement id is returned\", function (){",
+							"   pm.expect(jsonData.agreementId).to.not.eql(null); ",
+							"});",
+							"",
+							"pm.environment.set(\"agreementId_new\", jsonData.agreementId);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"rid\":{{uas_auto_rid}},\n   \"restaurantName\":\"{{uas_auto_rest_name}}\",\n   \"locale\": \"en-US\",\n   \"legalEntity\":\"JT TestEntity, LLC.\",\n   \"opportunityId\":\"3700c000001aJV2\",\n   \"quoteId\":\"3700c000001aJV2\",\n   \"dealType\" : \"System Change\",\n   \"feeNotes\" : \"checking the notes in the agreement flow\",\n   \"client\":{\n      \"email\":\"uas.tester@mailinator.com\",\n      \"firstName\":\"Uas\",\n      \"lastName\":\"Test\"\n   },\n   \"contractOwner\":{\n      \"firstName\":\"OpenTable\",\n      \"lastName\":\"Testing UAS\",\n      \"email\":\"otuas.test@opentable.com\",\n      \"phone\":\"415-344-4200\"\n   },\n   \"pricing\":[ \n      {\n         \"productName\":\"OpenTable System (Guest Center)\",\n         \"productCode\":\"SYS010\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":10000,\n         \"totalPrice\":10.0,\n         \"discount\":100000.0,\n         \"temporaryDiscountAmount\":100000.0,\n         \"temporaryDiscountMonths\":357,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"annual\"\n      },\n       {\n         \"productName\":\"Gifts29\",\n         \"productCode\":\"ABC15\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":20.0,\n         \"discount\":25.0,\n         \"totalPrice\":-5.0,\n         \"temporaryDiscountAmount\":15.0,\n         \"temporaryDiscountMonths\":2,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"monthly\"\n      },\n       {\n         \"productName\":\"Training\",\n         \"productCode\":\"SYS013\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":800,\n         \"totalPrice\":800.0,\n         \"discount\":799.0,\n         \"temporaryDiscountAmount\":799.0,\n         \"temporaryDiscountMonths\":1,\n         \"feeType\" : \"installtion\",\n         \"billingRecurrence\" : \"once\"\n      }\n   ]\n}"
+				},
+				"url": {
+					"raw": "{{orchestrator_host}}/orchestration/v1/agreements/",
+					"host": [
+						"{{orchestrator_host}}"
+					],
+					"path": [
+						"orchestration",
+						"v1",
+						"agreements",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify original agreement has expired",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa160d4e-aa28-461c-af52-8e7ea6584a79",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"pm.test(\"Verify status code indicates success\", function () {",
+							"    pm.expect(pm.response.code).to.eql(200);",
+							"});",
+							"",
+							"pm.test(\"Verify agreement id is present\", function (){",
+							"   pm.expect(jsonData.agreementId).to.not.eql(null); ",
+							"});",
+							"",
+							"pm.test(\"Verify agreement is in the Renegotiated state\", function (){",
+							"   pm.expect(jsonData.data.agreementState).to.eql(\"agreementRenegotiated\"); ",
+							"});",
+							"",
+							"pm.test(\"Verify the contract is not been signed \", function (){",
+							"   pm.expect(jsonData.isSigned).to.eql(false); ",
+							"});",
+							"",
+							"pm.test(\"Verify agreement has an expiration date\", function (){",
+							"   pm.expect(jsonData.expiryDate).to.not.eql(null); ",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"disabled": false,
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"agreementId\": \"4a6c9652-ce8d-4e6e-8d79-51295c3ce606\",\n   \"rid\":138,\n   \"restaurantName\":\"TR 138\",\n   \"locale\": \"en-US\",\n   \"legalEntity\":\"TR138, Inc.\",\n   \"opportunityId\":\"5200c000001kJV2\",\n   \"quoteId\":\"5200c000001kJV2\",\n   \"dealType\" : \"System Change\",\n   \"feeNotes\" : \"new notes $%^#&@*!(@)#_$+:>?<~`\",\n   \"client\":{\n      \"email\":\"agreeOne@mailinator.com\",\n      \"firstName\":\"AgreeOne\",\n      \"lastName\":\"WithUs\"\n   },\n   \"contractOwner\":{\n      \"firstName\":\"Julia\",\n      \"lastName\":\"Tseyref\",\n      \"email\":\"jtseyref@opentable.com\",\n      \"phone\":\"415-3444200\"\n   },\n   \"pricing\":[\n      {\n         \"productName\":\"OpenTable System (Guest Center)\",\n         \"productCode\":\"SYS010\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":19999.0,\n         \"totalPrice\":19900.0,\n         \"discount\":0,\n         \"temporaryDiscountAmount\":100.0,\n         \"temporaryDiscountMonths\":36,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"annual\"\n      },\n            {\n         \"productName\":\"Gifts\",\n         \"productCode\":\"ABC12\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":20.0,\n         \"discount\":5.0,\n         \"totalPrice\":15.0,\n         \"temporaryDiscountAmount\":15.0,\n         \"temporaryDiscountMonths\":2,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"monthly\"\n      }\n   ]\n}"
+				},
+				"url": {
+					"raw": "{{uas_host}}/user-agreement/v1/agreements/{{agreementId}}",
+					"host": [
+						"{{uas_host}}"
+					],
+					"path": [
+						"user-agreement",
+						"v1",
+						"agreements",
+						"{{agreementId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change agreement state to PricingConfirmed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa160d4e-aa28-461c-af52-8e7ea6584a79",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"pm.test(\"Verify status code indicates success\", function () {",
+							"    pm.expect(pm.response.code).to.eql(200);",
+							"});",
+							"",
+							"pm.test(\"Verify agreement id is present\", function (){",
+							"   pm.expect(jsonData.agreementId).to.not.eql(null); ",
+							"});",
+							"",
+							"pm.test(\"Verify agreement is in the Confirmed Pricing state\", function (){",
+							"   pm.expect(jsonData.data.agreementState).to.eql(\"pricingConfirmed\"); ",
+							"});",
+							"",
+							"pm.test(\"Verify the contract is not been signed \", function (){",
+							"   pm.expect(jsonData.isSigned).to.eql(false); ",
+							"});",
+							"",
+							"pm.test(\"Verify agreement has an expiration date\", function (){",
+							"   pm.expect(jsonData.expiryDate).to.not.eql(null); ",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"disabled": false,
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"data\":\n{\"agreementState\": \"pricingConfirmed\"}\n}"
+				},
+				"url": {
+					"raw": "{{uas_host}}/user-agreement/v1/agreements/{{agreementId_new}}",
+					"host": [
+						"{{uas_host}}"
+					],
+					"path": [
+						"user-agreement",
+						"v1",
+						"agreements",
+						"{{agreementId_new}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sign the agreement",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa160d4e-aa28-461c-af52-8e7ea6584a79",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"pm.test(\"Verify status code indicates success\", function () {",
+							"    pm.expect(pm.response.code).to.eql(200);",
+							"});",
+							"",
+							"pm.test(\"Verify the contract is signed \", function (){",
+							"   pm.expect(jsonData.isSigned).to.eql(true); ",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"disabled": false,
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"clientEmail\":\"uas.tester@mailinator.com\",\n   \"signedVersions\" : [1],\n   \"ipAddress\":\"10.0.0.0\"\n}"
+				},
+				"url": {
+					"raw": "{{uas_host}}/user-agreement/v1/agreements/{{agreementId_new}}/sign",
+					"host": [
+						"{{uas_host}}"
+					],
+					"path": [
+						"user-agreement",
+						"v1",
+						"agreements",
+						"{{agreementId_new}}",
+						"sign"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify agreement in the termsAccepted state cannot be updated",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa160d4e-aa28-461c-af52-8e7ea6584a79",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"pm.test(\"Verify the request has failed\", function () {",
+							"    pm.expect(pm.response.code).to.eql(400);",
+							"});",
+							"",
+							"pm.test(\"Signed agreement cannot be updated\", function (){",
+							"   pm.expect(jsonData.errorCode).to.eql(\"agreement_already_signed\"); ",
+							"});",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"disabled": false,
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"data\":\n{\"agreementState\": \"pricingConfirmed\"}\n}"
+				},
+				"url": {
+					"raw": "{{uas_host}}/user-agreement/v1/agreements/{{agreementId_new}}",
+					"host": [
+						"{{uas_host}}"
+					],
+					"path": [
+						"user-agreement",
+						"v1",
+						"agreements",
+						"{{agreementId_new}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change state to appointmentScheduled",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c0781556-6350-4d58-85db-c2590a2e6a54",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"pm.test(\"Verify status code indicates success\", function () {",
+							"    pm.expect(pm.response.code).to.eql(200);",
+							"});",
+							"",
+							"pm.test(\"Appointment has been scheduled\", function (){",
+							"    pm.expect(jsonData.data.agreementState).to.eql(\"appointmentScheduled\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"disabled": false
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{uas_host}}/user-agreement/v1/agreements/erb-to-gc-upgrade/{{agreementId_new}}/appointment-scheduled",
+					"host": [
+						"{{uas_host}}"
+					],
+					"path": [
+						"user-agreement",
+						"v1",
+						"agreements",
+						"erb-to-gc-upgrade",
+						"{{agreementId_new}}",
+						"appointment-scheduled"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View final agreement details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fa160d4e-aa28-461c-af52-8e7ea6584a79",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"pm.test(\"Verify status code indicates success\", function() {",
+							"    pm.expect(pm.response.code).to.eql(200);",
+							"});",
+							"",
+							"pm.test(\"Verify agreement id is present\", function() {",
+							"    pm.expect(jsonData.agreementId).to.not.eql(null);",
+							"});",
+							"",
+							"pm.test(\"Verify agreement is in the AppointmentScheduled state\", function() {",
+							"    pm.expect(jsonData.data.agreementState).to.eql(\"appointmentScheduled\");",
+							"});",
+							"",
+							"pm.test(\"Verify the contract is signed\", function (){",
+							"   pm.expect(jsonData.isSigned).to.eql(true); ",
+							"});",
+							"",
+							"pm.test(\"Verify agreement has T&C's\", function() {",
+							"    pm.expect(jsonData.termsAndConditions).to.not.eql(null);",
+							"});",
+							"",
+							"pm.test(\"Verify Restaurant Name is not empty\", function() {",
+							"    pm.expect(jsonData.data.restaurantName).to.not.eql(null);",
+							"});",
+							"",
+							"pm.test(\"Verify Legal Entity is not empty\", function() {",
+							"    pm.expect(jsonData.data.legalEntity).to.not.eql(null);",
+							"});",
+							"",
+							"pm.test(\"Verify Pricing section is not empty\", function() {",
+							"    pm.expect(jsonData.data.pricing).to.not.eql(null);",
+							"});",
+							"",
+							"pm.test(\"Verify Pricing section has 3 products\", function() {",
+							"    pm.expect(jsonData.data.pricing.length).to.eql(3);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"disabled": false,
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"agreementId\": \"4a6c9652-ce8d-4e6e-8d79-51295c3ce606\",\n   \"rid\":138,\n   \"restaurantName\":\"TR 138\",\n   \"locale\": \"en-US\",\n   \"legalEntity\":\"TR138, Inc.\",\n   \"opportunityId\":\"5200c000001kJV2\",\n   \"quoteId\":\"5200c000001kJV2\",\n   \"dealType\" : \"System Change\",\n   \"feeNotes\" : \"new notes $%^#&@*!(@)#_$+:>?<~`\",\n   \"client\":{\n      \"email\":\"agreeOne@mailinator.com\",\n      \"firstName\":\"AgreeOne\",\n      \"lastName\":\"WithUs\"\n   },\n   \"contractOwner\":{\n      \"firstName\":\"Julia\",\n      \"lastName\":\"Tseyref\",\n      \"email\":\"jtseyref@opentable.com\",\n      \"phone\":\"415-3444200\"\n   },\n   \"pricing\":[\n      {\n         \"productName\":\"OpenTable System (Guest Center)\",\n         \"productCode\":\"SYS010\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":19999.0,\n         \"totalPrice\":19900.0,\n         \"discount\":0,\n         \"temporaryDiscountAmount\":100.0,\n         \"temporaryDiscountMonths\":36,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"annual\"\n      },\n            {\n         \"productName\":\"Gifts\",\n         \"productCode\":\"ABC12\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":20.0,\n         \"discount\":5.0,\n         \"totalPrice\":15.0,\n         \"temporaryDiscountAmount\":15.0,\n         \"temporaryDiscountMonths\":2,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"monthly\"\n      }\n   ]\n}"
+				},
+				"url": {
+					"raw": "{{uas_host}}/user-agreement/v1/agreements/{{agreementId_new}}",
+					"host": [
+						"{{uas_host}}"
+					],
+					"path": [
+						"user-agreement",
+						"v1",
+						"agreements",
+						"{{agreementId_new}}"
 					]
 				}
 			},
