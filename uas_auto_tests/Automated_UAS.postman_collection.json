@@ -15,6 +15,11 @@
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
 							"",
+							"if(responseCode.code !== 200){",
+							"    console.log(\"Failed with the following error:\" + jsonData.errorCode);",
+							"}",
+							"else{",
+							"",
 							"pm.test(\"Verify status code indicates success\", function () {",
 							"    pm.expect(pm.response.code).to.eql(200);",
 							"});",
@@ -24,6 +29,7 @@
 							"});",
 							"",
 							"pm.environment.set(\"agreementId\", jsonData.agreementId);",
+							"}",
 							"",
 							"if(pm.environment.get(\"orchestrator_host\") === 'http://rlc-orchestration-service-prod-sc.otenv.com'){",
 							"    postman.setNextRequest(\"Discovery: user-agreement-service\");",
@@ -47,7 +53,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n   \"rid\":{{uas_auto_rid}},\n   \"restaurantName\":\"{{uas_auto_rest_name}}\",\n   \"locale\": \"en-US\",\n   \"legalEntity\":\"JT TestEntity, LLC.\",\n   \"opportunityId\":\"3700c000001aJV2\",\n   \"quoteId\":\"3700c000001aJV2\",\n   \"dealType\" : \"System Change\",\n   \"feeNotes\" : \"checking the notes in the agreement flow\",\n   \"client\":{\n      \"email\":\"uas.tester@mailinator.com\",\n      \"firstName\":\"Uas\",\n      \"lastName\":\"Test\"\n   },\n   \"contractOwner\":{\n      \"firstName\":\"OpenTable\",\n      \"lastName\":\"Testing UAS\",\n      \"email\":\"otuas.test@opentable.com\",\n      \"phone\":\"415-344-4200\"\n   },\n   \"pricing\":[ \n      {\n         \"productName\":\"OpenTable System (Guest Center)\",\n         \"productCode\":\"SYS010\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":10000,\n         \"totalPrice\":10.0,\n         \"discount\":100000.0,\n         \"temporaryDiscountAmount\":100000.0,\n         \"temporaryDiscountMonths\":357,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"annual\"\n      },\n       {\n         \"productName\":\"Gifts29\",\n         \"productCode\":\"ABC15\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":20.0,\n         \"discount\":25.0,\n         \"totalPrice\":-5.0,\n         \"temporaryDiscountAmount\":15.0,\n         \"temporaryDiscountMonths\":2,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"monthly\"\n      },\n       {\n         \"productName\":\"Training\",\n         \"productCode\":\"SYS013\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":800,\n         \"totalPrice\":800.0,\n         \"discount\":799.0,\n         \"temporaryDiscountAmount\":799.0,\n         \"temporaryDiscountMonths\":1,\n         \"feeType\" : \"installtion\",\n         \"billingRecurrence\" : \"once\"\n      }\n   ]\n}"
+					"raw": "{\n   \"rid\":{{uas_auto_rid}},\n   \"restaurantName\":\"{{uas_auto_rest_name}}\",\n   \"locale\": \"en-US\",\n   \"legalEntity\":\"JT TestEntity, LLC.\",\n   \"opportunityId\":\"3700c000001aJV2\",\n   \"quoteId\":\"3700c000001aJV2\",\n   \"dealType\" : \"System Change\",\n   \"feeNotes\" : \"checking the notes in the agreement flow\",\n   \"client\":{\n      \"email\":\"uas.tester@mailinator.com\",\n      \"firstName\":\"Uas\",\n      \"lastName\":\"Test\"\n   },\n   \"contractOwner\":{\n      \"firstName\":\"OpenTable\",\n      \"lastName\":\"Testing UAS\",\n      \"email\":\"jtseyref@opentable.com\",\n      \"phone\":\"415-344-4200\"\n   },\n   \"pricing\":[ \n      {\n         \"productName\":\"OpenTable System (Guest Center)\",\n         \"productCode\":\"SYS010\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":10000,\n         \"totalPrice\":10.0,\n         \"discount\":100000.0,\n         \"temporaryDiscountAmount\":100000.0,\n         \"temporaryDiscountMonths\":357,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"annual\"\n      },\n       {\n         \"productName\":\"Gifts29\",\n         \"productCode\":\"ABC15\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":20.0,\n         \"discount\":25.0,\n         \"totalPrice\":-5.0,\n         \"temporaryDiscountAmount\":15.0,\n         \"temporaryDiscountMonths\":2,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"monthly\"\n      },\n       {\n         \"productName\":\"Training\",\n         \"productCode\":\"SYS013\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":800,\n         \"totalPrice\":800.0,\n         \"discount\":799.0,\n         \"temporaryDiscountAmount\":799.0,\n         \"temporaryDiscountMonths\":1,\n         \"feeType\" : \"installtion\",\n         \"billingRecurrence\" : \"once\"\n      }\n   ]\n}"
 				},
 				"url": {
 					"raw": "{{orchestrator_host}}/orchestration/v1/agreements/",
@@ -70,7 +76,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "e4b9510c-093b-4e6e-b4c5-d823353b20e9",
+						"id": "c6b6b448-d70a-4522-b5e7-058f49683e19",
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
 							"postman.setEnvironmentVariable(\"uas_host\", jsonData.results[0].serviceUri);",
@@ -119,6 +125,10 @@
 						"id": "fa160d4e-aa28-461c-af52-8e7ea6584a79",
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
+							"if(responseCode.code !== 200){",
+							"    console.log(\"Failed with the following error:\" + jsonData.errorCode);",
+							"}",
+							"else{",
 							"",
 							"pm.test(\"Verify status code indicates success\", function () {",
 							"    pm.expect(pm.response.code).to.eql(200);",
@@ -174,7 +184,8 @@
 							"",
 							"pm.test(\"Verify currency is USD on the 3rd product\", function (){",
 							"   pm.expect(jsonData.data.pricing[2].currencyCode).to.eql(\"USD\"); ",
-							"});"
+							"});",
+							"}"
 						],
 						"type": "text/javascript"
 					}
@@ -216,10 +227,15 @@
 					"script": {
 						"id": "8c406cd9-4c81-45a7-9802-fcb69313c709",
 						"exec": [
+							"if(responseCode.code !== 204){",
+							"    var jsonData = JSON.parse(responseBody);",
+							"    console.log(\"Failed with the following error:\" + jsonData.errorCode);",
+							"}",
+							"else{",
 							"pm.test(\"Verify status code indicates success\", function () {",
 							"    pm.expect(pm.response.code).to.eql(204);",
 							"});",
-							""
+							"}"
 						],
 						"type": "text/javascript"
 					}
@@ -261,6 +277,10 @@
 						"id": "fa160d4e-aa28-461c-af52-8e7ea6584a79",
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
+							"if(responseCode.code !== 200){",
+							"    console.log(\"Failed with the following error:\" + jsonData.errorCode);",
+							"}",
+							"else{",
 							"",
 							"pm.test(\"Verify status code indicates success\", function () {",
 							"    pm.expect(pm.response.code).to.eql(200);",
@@ -312,7 +332,9 @@
 							"",
 							"pm.test(\"Verify currency is USD on the 2nd product\", function (){",
 							"   pm.expect(jsonData.data.pricing[1].currencyCode).to.eql(\"USD\"); ",
-							"});"
+							"});",
+							"    ",
+							"}"
 						],
 						"type": "text/javascript"
 					}
@@ -355,7 +377,10 @@
 						"id": "8c406cd9-4c81-45a7-9802-fcb69313c709",
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
-							"",
+							"if(responseCode.code !== 200){",
+							"    console.log(\"Failed with the following error:\" + jsonData.errorCode);",
+							"}",
+							"else{",
 							"pm.test(\"Verify status code indicates success\", function () {",
 							"    pm.expect(pm.response.code).to.eql(200);",
 							"});",
@@ -363,6 +388,7 @@
 							"pm.test(\"Verify agreement id is returned\", function (){",
 							"   pm.expect(jsonData.agreementId).to.not.eql(null); ",
 							"});",
+							"}",
 							"",
 							"pm.environment.set(\"agreementId_new\", jsonData.agreementId);",
 							""
@@ -407,6 +433,10 @@
 						"id": "fa160d4e-aa28-461c-af52-8e7ea6584a79",
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
+							"if(responseCode.code !== 200){",
+							"    console.log(\"Failed with the following error:\" + jsonData.errorCode);",
+							"}",
+							"else{",
 							"",
 							"pm.test(\"Verify status code indicates success\", function () {",
 							"    pm.expect(pm.response.code).to.eql(200);",
@@ -427,7 +457,7 @@
 							"pm.test(\"Verify agreement has an expiration date\", function (){",
 							"   pm.expect(jsonData.expiryDate).to.not.eql(null); ",
 							"});",
-							""
+							"}"
 						],
 						"type": "text/javascript"
 					}
@@ -471,6 +501,14 @@
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
 							"",
+							"if(responseCode.code !== 400){",
+							"    pm.test(\"Verify status code indicates an illegal attempt to change the state\", function () {",
+							"        pm.expect(pm.response.code).to.eql(400);",
+							"});",
+							"    console.log(\"Expected 400 code, but instead received: \" + (responseCode.code));",
+							"}",
+							"else{",
+							"",
 							"pm.test(\"Verify status code indicates an illegal attempt to change the state\", function () {",
 							"    pm.expect(pm.response.code).to.eql(400);",
 							"});",
@@ -479,7 +517,7 @@
 							"   pm.expect(jsonData.errorCode).to.eql(\"pricing_not_yet_accepted\"); ",
 							"});",
 							"",
-							""
+							"}"
 						],
 						"type": "text/javascript"
 					}
@@ -523,6 +561,11 @@
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
 							"",
+							"if(responseCode.code !== 200){",
+							"    console.log(\"Failed with the following error:\" + jsonData.errorCode);",
+							"}",
+							"else{",
+							"",
 							"pm.test(\"Verify status code indicates success\", function () {",
 							"    pm.expect(pm.response.code).to.eql(200);",
 							"});",
@@ -542,7 +585,7 @@
 							"pm.test(\"Verify agreement has an expiration date\", function (){",
 							"   pm.expect(jsonData.expiryDate).to.not.eql(null); ",
 							"});",
-							""
+							"}"
 						],
 						"type": "text/javascript"
 					}
@@ -585,7 +628,11 @@
 						"id": "fa160d4e-aa28-461c-af52-8e7ea6584a79",
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
-							"",
+							"if(responseCode.code !== 200){",
+							"    console.log(\"Failed with the following error:\" + jsonData.errorCode);",
+							"    console.log(\"Status code:\" + responseCode.code);",
+							"}",
+							"else{",
 							"pm.test(\"Verify status code indicates success\", function () {",
 							"    pm.expect(pm.response.code).to.eql(200);",
 							"});",
@@ -594,7 +641,7 @@
 							"   pm.expect(jsonData.isSigned).to.eql(true); ",
 							"});",
 							"",
-							"",
+							"}",
 							""
 						],
 						"type": "text/javascript"
@@ -640,6 +687,11 @@
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
 							"",
+							"if(responseCode.code !== 200){",
+							"    console.log(\"Failed with the following error:\" + jsonData.errorCode);",
+							"    console.log(\"Status code:\" + responseCode.code);",
+							"}",
+							"else{",
 							"pm.test(\"Verify the request has failed\", function () {",
 							"    pm.expect(pm.response.code).to.eql(400);",
 							"});",
@@ -647,8 +699,8 @@
 							"pm.test(\"Signed agreement cannot be updated\", function (){",
 							"   pm.expect(jsonData.errorCode).to.eql(\"agreement_already_signed\"); ",
 							"});",
-							"",
-							"",
+							"console.log(\"State of the agreement:\" + jsonData.data.agreementState);",
+							"}",
 							"",
 							""
 						],
@@ -693,14 +745,19 @@
 						"id": "c0781556-6350-4d58-85db-c2590a2e6a54",
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
-							"",
+							"if(responseCode.code !== 200) {",
+							"    console.log(\"Failed with the following error:\" + jsonData.errorCode);",
+							"    console.log(\"Status code:\" + responseCode.code);",
+							"}",
+							"else{",
 							"pm.test(\"Verify status code indicates success\", function () {",
 							"    pm.expect(pm.response.code).to.eql(200);",
 							"});",
 							"",
 							"pm.test(\"Appointment has been scheduled\", function (){",
 							"    pm.expect(jsonData.data.agreementState).to.eql(\"appointmentScheduled\");",
-							"});"
+							"});",
+							"}"
 						],
 						"type": "text/javascript"
 					}
@@ -745,7 +802,11 @@
 						"id": "fa160d4e-aa28-461c-af52-8e7ea6584a79",
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
-							"",
+							"if(responseCode.code !== 200){",
+							"console.log(\"Failed with the following error:\" + jsonData.errorCode);",
+							"    console.log(\"Status code:\" + responseCode.code);",
+							"}",
+							"else{",
 							"pm.test(\"Verify status code indicates success\", function() {",
 							"    pm.expect(pm.response.code).to.eql(200);",
 							"});",
@@ -792,7 +853,8 @@
 							"",
 							"pm.test(\"Verify currency is USD on the 3rd product\", function (){",
 							"   pm.expect(jsonData.data.pricing[2].currencyCode).to.eql(\"USD\"); ",
-							"});"
+							"});",
+							"}"
 						],
 						"type": "text/javascript"
 					}
@@ -835,6 +897,7 @@
 						"id": "8c406cd9-4c81-45a7-9802-fcb69313c709",
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
+							"console.log(\"Expected 400, but the Current status is: \" + responseCode.code);",
 							"",
 							"pm.test(\"Verify status code indicates the action is not allowed\", function () {",
 							"    pm.expect(pm.response.code).to.eql(400);",
