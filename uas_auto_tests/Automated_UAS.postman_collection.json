@@ -97,7 +97,10 @@
 						"value": "application/json"
 					}
 				],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "{{discovery}}/announcement?serviceType=rlc-user-agreement-service",
 					"host": [
@@ -202,7 +205,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"agreementId\": \"4a6c9652-ce8d-4e6e-8d79-51295c3ce606\",\n   \"rid\":138,\n   \"restaurantName\":\"TR 138\",\n   \"locale\": \"en-US\",\n   \"legalEntity\":\"TR138, Inc.\",\n   \"opportunityId\":\"5200c000001kJV2\",\n   \"quoteId\":\"5200c000001kJV2\",\n   \"dealType\" : \"System Change\",\n   \"feeNotes\" : \"new notes $%^#&@*!(@)#_$+:>?<~`\",\n   \"client\":{\n      \"email\":\"agreeOne@mailinator.com\",\n      \"firstName\":\"AgreeOne\",\n      \"lastName\":\"WithUs\"\n   },\n   \"contractOwner\":{\n      \"firstName\":\"Julia\",\n      \"lastName\":\"Tseyref\",\n      \"email\":\"jtseyref@opentable.com\",\n      \"phone\":\"415-3444200\"\n   },\n   \"pricing\":[\n      {\n         \"productName\":\"OpenTable System (Guest Center)\",\n         \"productCode\":\"SYS010\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":19999.0,\n         \"totalPrice\":19900.0,\n         \"discount\":0,\n         \"temporaryDiscountAmount\":100.0,\n         \"temporaryDiscountMonths\":36,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"annual\"\n      },\n            {\n         \"productName\":\"Gifts\",\n         \"productCode\":\"ABC12\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":20.0,\n         \"discount\":5.0,\n         \"totalPrice\":15.0,\n         \"temporaryDiscountAmount\":15.0,\n         \"temporaryDiscountMonths\":2,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"monthly\"\n      }\n   ]\n}"
+					"raw": ""
 				},
 				"url": {
 					"raw": "{{uas_host}}/user-agreement/v1/agreements/{{agreementId}}",
@@ -251,7 +254,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n   \"rid\":{{uas_auto_rid}},\n   \"restaurantName\":\"{{uas_auto_rest_name}}\",\n   \"locale\": \"en-US\",\n   \"legalEntity\":\"JT TestEntity, LLC.\",\n   \"opportunityId\":\"3700c000001aJV2\",\n   \"quoteId\":\"3700c000001aJV2\",\n   \"dealType\" : \"System Change\",\n   \"feeNotes\" : \"checking the notes in the agreement flow\",\n   \"client\":{\n      \"email\":\"uas.tester@mailinator.com\",\n      \"firstName\":\"Uas\",\n      \"lastName\":\"Test\"\n   },\n   \"contractOwner\":{\n      \"firstName\":\"OpenTable\",\n      \"lastName\":\"Testing UAS\",\n      \"email\":\"otuas.test@opentable.com\",\n      \"phone\":\"415-344-4203\"\n   },\n   \"pricing\":[ \n      {\n         \"productName\":\"OpenTable System (Guest Center)\",\n         \"productCode\":\"SYS010\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":13000,\n         \"totalPrice\":13.0,\n         \"discount\":130000.0,\n         \"temporaryDiscountAmount\":100000.0,\n         \"temporaryDiscountMonths\":24,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"annual\"\n      },\n        {\n         \"productName\":\"Training\",\n         \"productCode\":\"SYS013\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":800,\n         \"totalPrice\":800.0,\n         \"discount\":799.0,\n         \"temporaryDiscountAmount\":799.0,\n         \"temporaryDiscountMonths\":1,\n         \"feeType\" : \"installtion\",\n         \"billingRecurrence\" : \"once\"\n      }\n   ]\n}"
+					"raw": "{\n   \"rid\":{{uas_auto_rid}},\n   \"restaurantName\":\"{{uas_auto_rest_name}}\",\n   \"locale\": \"en-US\",\n   \"legalEntity\":\"JT TestEntity, LLC.\",\n   \"opportunityId\":\"3700c000001aJV2\",\n   \"quoteId\":\"3700c000001aJV2\",\n   \"dealType\" : \"System Change\",\n   \"feeNotes\" : \"checking the notes in the agreement flow\",\n   \"client\":{\n      \"email\":\"uas.tester@mailinator.com\",\n      \"firstName\":\"Uas\",\n      \"lastName\":\"Test\"\n   },\n   \"contractOwner\":{\n      \"firstName\":\"OpenTable\",\n      \"lastName\":\"Testing UAS\",\n      \"email\":\"otuas.test@opentable.com\",\n      \"phone\":\"415-344-4203\"\n   },\n   \"pricing\":[ \n      {\n         \"productName\":\"OpenTable System (Guest Center)\",\n         \"productCode\":\"SYS010\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":13000,\n         \"totalPrice\":13.0,\n         \"discount\":130000.0,\n         \"temporaryDiscountAmount\":100000.0,\n         \"temporaryDiscountMonths\":24,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"annual\"\n      },\n        {\n         \"productName\":\"Training\",\n         \"productCode\":\"SYS013\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":800,\n         \"totalPrice\":800.0,\n         \"discount\":799.0,\n         \"temporaryDiscountAmount\":799.0,\n         \"temporaryDiscountMonths\":1,\n         \"feeType\" : \"installation\",\n         \"billingRecurrence\" : \"once\"\n      }\n   ]\n}"
 				},
 				"url": {
 					"raw": "{{orchestrator_host}}/orchestration/v1/agreements/{{agreementId}}",
@@ -351,7 +354,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"agreementId\": \"4a6c9652-ce8d-4e6e-8d79-51295c3ce606\",\n   \"rid\":138,\n   \"restaurantName\":\"TR 138\",\n   \"locale\": \"en-US\",\n   \"legalEntity\":\"TR138, Inc.\",\n   \"opportunityId\":\"5200c000001kJV2\",\n   \"quoteId\":\"5200c000001kJV2\",\n   \"dealType\" : \"System Change\",\n   \"feeNotes\" : \"new notes $%^#&@*!(@)#_$+:>?<~`\",\n   \"client\":{\n      \"email\":\"agreeOne@mailinator.com\",\n      \"firstName\":\"AgreeOne\",\n      \"lastName\":\"WithUs\"\n   },\n   \"contractOwner\":{\n      \"firstName\":\"Julia\",\n      \"lastName\":\"Tseyref\",\n      \"email\":\"jtseyref@opentable.com\",\n      \"phone\":\"415-3444200\"\n   },\n   \"pricing\":[\n      {\n         \"productName\":\"OpenTable System (Guest Center)\",\n         \"productCode\":\"SYS010\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":19999.0,\n         \"totalPrice\":19900.0,\n         \"discount\":0,\n         \"temporaryDiscountAmount\":100.0,\n         \"temporaryDiscountMonths\":36,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"annual\"\n      },\n            {\n         \"productName\":\"Gifts\",\n         \"productCode\":\"ABC12\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":20.0,\n         \"discount\":5.0,\n         \"totalPrice\":15.0,\n         \"temporaryDiscountAmount\":15.0,\n         \"temporaryDiscountMonths\":2,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"monthly\"\n      }\n   ]\n}"
+					"raw": ""
 				},
 				"url": {
 					"raw": "{{uas_host}}/user-agreement/v1/agreements/{{agreementId}}",
@@ -474,7 +477,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"agreementId\": \"4a6c9652-ce8d-4e6e-8d79-51295c3ce606\",\n   \"rid\":138,\n   \"restaurantName\":\"TR 138\",\n   \"locale\": \"en-US\",\n   \"legalEntity\":\"TR138, Inc.\",\n   \"opportunityId\":\"5200c000001kJV2\",\n   \"quoteId\":\"5200c000001kJV2\",\n   \"dealType\" : \"System Change\",\n   \"feeNotes\" : \"new notes $%^#&@*!(@)#_$+:>?<~`\",\n   \"client\":{\n      \"email\":\"agreeOne@mailinator.com\",\n      \"firstName\":\"AgreeOne\",\n      \"lastName\":\"WithUs\"\n   },\n   \"contractOwner\":{\n      \"firstName\":\"Julia\",\n      \"lastName\":\"Tseyref\",\n      \"email\":\"jtseyref@opentable.com\",\n      \"phone\":\"415-3444200\"\n   },\n   \"pricing\":[\n      {\n         \"productName\":\"OpenTable System (Guest Center)\",\n         \"productCode\":\"SYS010\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":19999.0,\n         \"totalPrice\":19900.0,\n         \"discount\":0,\n         \"temporaryDiscountAmount\":100.0,\n         \"temporaryDiscountMonths\":36,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"annual\"\n      },\n            {\n         \"productName\":\"Gifts\",\n         \"productCode\":\"ABC12\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":20.0,\n         \"discount\":5.0,\n         \"totalPrice\":15.0,\n         \"temporaryDiscountAmount\":15.0,\n         \"temporaryDiscountMonths\":2,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"monthly\"\n      }\n   ]\n}"
+					"raw": ""
 				},
 				"url": {
 					"raw": "{{uas_host}}/user-agreement/v1/agreements/{{agreementId}}",
@@ -524,7 +527,7 @@
 				}
 			],
 			"request": {
-				"method": "PATCH",
+				"method": "POST",
 				"header": [
 					{
 						"disabled": false,
@@ -534,10 +537,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"data\":\n{\"agreementState\": \"termsAccepted\"}\n}"
+					"raw": "{\n    \"clientEmail\": \"uas.tester@mailinator.com\",\n    \"signedVersions\": [1],\n    \"ipAddress\": \"10.0.0.0\"\n}\n"
 				},
 				"url": {
-					"raw": "{{uas_host}}/user-agreement/v1/agreements/{{agreementId_new}}",
+					"raw": "{{uas_host}}/user-agreement/v1/agreements/{{agreementId_new}}/sign",
 					"host": [
 						"{{uas_host}}"
 					],
@@ -545,7 +548,8 @@
 						"user-agreement",
 						"v1",
 						"agreements",
-						"{{agreementId_new}}"
+						"{{agreementId_new}}",
+						"sign"
 					]
 				}
 			},
@@ -575,7 +579,7 @@
 							"});",
 							"",
 							"pm.test(\"Verify agreement is in the Confirmed Pricing state\", function (){",
-							"   pm.expect(jsonData.data.agreementState).to.eql(\"pricingConfirmed\"); ",
+							"   pm.expect(jsonData.data.agreementState).to.eql(\"pricingAccepted\"); ",
 							"});",
 							"",
 							"pm.test(\"Verify the contract is not been signed \", function (){",
@@ -602,7 +606,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"data\":\n{\"agreementState\": \"pricingConfirmed\"}\n}"
+					"raw": "{\"data\":{\n\t\"agreementState\": \"pricingAccepted\"\n\t}\n}"
 				},
 				"url": {
 					"raw": "{{uas_host}}/user-agreement/v1/agreements/{{agreementId_new}}",
@@ -687,7 +691,7 @@
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
 							"",
-							"if(responseCode.code !== 200){",
+							"if(responseCode.code !== 400){",
 							"    console.log(\"Failed with the following error:\" + jsonData.errorCode);",
 							"    console.log(\"Status code:\" + responseCode.code);",
 							"}",
@@ -699,7 +703,6 @@
 							"pm.test(\"Signed agreement cannot be updated\", function (){",
 							"   pm.expect(jsonData.errorCode).to.eql(\"agreement_already_signed\"); ",
 							"});",
-							"console.log(\"State of the agreement:\" + jsonData.data.agreementState);",
 							"}",
 							"",
 							""
@@ -761,6 +764,20 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "51e1de1a-fb95-4928-baf4-545b1e03a986",
+						"exec": [
+							"var currentDate = new Date(new Date().getTime() + 72 * 60 * 60 * 1000);",
+							"var date = currentDate.toISOString().split('T')[0];",
+							"var apptDate = date + \"T11:45\" + \":00-07:00\";",
+							"",
+							"postman.setEnvironmentVariable(\"apptDate\", apptDate);"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -774,18 +791,17 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": ""
+					"raw": "{\n    \"appointmentDate\": \"{{apptDate}}\"\n} "
 				},
 				"url": {
-					"raw": "{{uas_host}}/user-agreement/v1/agreements/erb-to-gc-upgrade/{{agreementId_new}}/appointment-scheduled",
+					"raw": "{{orchestrator_host}}/orchestration/v1/agreements/{{agreementId_new}}/appointment-scheduled",
 					"host": [
-						"{{uas_host}}"
+						"{{orchestrator_host}}"
 					],
 					"path": [
-						"user-agreement",
+						"orchestration",
 						"v1",
 						"agreements",
-						"erb-to-gc-upgrade",
 						"{{agreementId_new}}",
 						"appointment-scheduled"
 					]
@@ -871,7 +887,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"agreementId\": \"4a6c9652-ce8d-4e6e-8d79-51295c3ce606\",\n   \"rid\":138,\n   \"restaurantName\":\"TR 138\",\n   \"locale\": \"en-US\",\n   \"legalEntity\":\"TR138, Inc.\",\n   \"opportunityId\":\"5200c000001kJV2\",\n   \"quoteId\":\"5200c000001kJV2\",\n   \"dealType\" : \"System Change\",\n   \"feeNotes\" : \"new notes $%^#&@*!(@)#_$+:>?<~`\",\n   \"client\":{\n      \"email\":\"agreeOne@mailinator.com\",\n      \"firstName\":\"AgreeOne\",\n      \"lastName\":\"WithUs\"\n   },\n   \"contractOwner\":{\n      \"firstName\":\"Julia\",\n      \"lastName\":\"Tseyref\",\n      \"email\":\"jtseyref@opentable.com\",\n      \"phone\":\"415-3444200\"\n   },\n   \"pricing\":[\n      {\n         \"productName\":\"OpenTable System (Guest Center)\",\n         \"productCode\":\"SYS010\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":19999.0,\n         \"totalPrice\":19900.0,\n         \"discount\":0,\n         \"temporaryDiscountAmount\":100.0,\n         \"temporaryDiscountMonths\":36,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"annual\"\n      },\n            {\n         \"productName\":\"Gifts\",\n         \"productCode\":\"ABC12\",\n         \"currencyCode\":\"USD\",\n         \"listPrice\":20.0,\n         \"discount\":5.0,\n         \"totalPrice\":15.0,\n         \"temporaryDiscountAmount\":15.0,\n         \"temporaryDiscountMonths\":2,\n         \"feeType\" : \"covers\",\n         \"billingRecurrence\" : \"monthly\"\n      }\n   ]\n}"
+					"raw": ""
 				},
 				"url": {
 					"raw": "{{uas_host}}/user-agreement/v1/agreements/{{agreementId_new}}",
@@ -904,7 +920,7 @@
 							"});",
 							"",
 							"pm.test(\"Verify errorCode states the agreement cannot be created due to missing T&C's\", function (){",
-							"   pm.expect(jsonData.errorCode).to.eql(\"terms_are_not_available_for_this_locale\"); ",
+							"   pm.expect(jsonData.errorCode).to.eql(\"unavailable_locale\"); ",
 							"});",
 							"",
 							"",
