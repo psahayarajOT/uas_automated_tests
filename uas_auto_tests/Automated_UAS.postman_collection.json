@@ -17,6 +17,7 @@
 							"",
 							"if(responseCode.code !== 200){",
 							"    console.log(\"Failed with the following error:\" + jsonData.errorCode);",
+							"    console.log(\"error status: \" + responseCode.Code);",
 							"}",
 							"else{",
 							"",
