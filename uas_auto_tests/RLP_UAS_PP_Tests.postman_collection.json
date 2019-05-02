@@ -1,0 +1,559 @@
+{
+	"info": {
+		"_postman_id": "14e1a403-e146-4b05-9377-0a0bee8e36e2",
+		"name": "UAS_Integration_Tests",
+		"description": "UAS integration tests for the new user agreeement service.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "OAuth Get Token ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "25e80c94-9f9a-4dca-adfd-4065fc7e86d9",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"console.log(\"Bearer token: bearer \" + data.access_token);",
+							"pm.environment.set(\"token\", data.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "Basic {{basic_auth_token}}",
+						"type": "text"
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "psahayaraj@opentable.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Placements@123456789",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{oauth_host}}/api/v2/oauth/token",
+					"host": [
+						"{{oauth_host}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"oauth",
+						"token"
+					]
+				},
+				"description": "OAuth Get Token "
+			},
+			"response": []
+		},
+		{
+			"name": "Create a new user agreement for context and agreement type",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1e1bc953-8af3-49b2-bcb0-9727e58b87b0",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"console.log(\"The agreement id is :\" + data.id);",
+							"console.log(\"The status code is :\" +responseCode.code);",
+							"pm.environment.set(\"agreementId\", data.id);",
+							"",
+							"",
+							"if(responseCode.code !== 201){",
+							"    console.log(\"Failed with the following error:\" + data.errorCode);",
+							"    console.log(\"error status: \" + responseCode.Code);",
+							"}",
+							"else{",
+							"",
+							"pm.test(\"Verify status code indicates success\", function () {",
+							"    pm.expect(pm.response.code).to.eql(201);",
+							"});",
+							"",
+							"pm.test(\"Verify agreement id is returned\", function (){",
+							"   pm.expect(data.id).to.not.eql(null); ",
+							"});",
+							"",
+							"pm.environment.set(\"agreementId\", data.id);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"type\":\"pos_integration\",\n \"context\":\"urn:ot.restaurants:1005730\"\n}"
+				},
+				"url": {
+					"raw": "{{uas_host}}/v1/user-agreement/agreements",
+					"host": [
+						"{{uas_host}}"
+					],
+					"path": [
+						"v1",
+						"user-agreement",
+						"agreements"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get AgreementDetails Before Signing",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e50fe5b3-1750-499e-b29a-685912f7e5c5",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"console.log(\"The agreement id is :\" + data.id);",
+							"",
+							"if(responseCode.code !== 200){",
+							"    console.log(\"Failed with the following error:\" + data.errorCode);",
+							"    console.log(\"error status: \" + responseCode.Code);",
+							"}",
+							"else{",
+							"",
+							"pm.test(\"Verify status code indicates success\", function () {",
+							"    pm.expect(pm.response.code).to.eql(200);",
+							"});",
+							"",
+							"pm.test(\"Verify agreement id is returned\", function (){",
+							"   pm.expect(data.id).to.not.eql(null); ",
+							"});",
+							"",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{uas_host}}/v1/user-agreement/agreements/{{agreementId}}",
+					"host": [
+						"{{uas_host}}"
+					],
+					"path": [
+						"v1",
+						"user-agreement",
+						"agreements",
+						"{{agreementId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sign User Agreement",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a029d532-8fce-438b-a338-fd9b1ba04e96",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"console.log(\"The agreement id is :\" + data.id);",
+							"",
+							"var signedDetails = data.signingDetails;",
+							"",
+							"if(responseCode.code !== 200){",
+							"    console.log(\"Failed with the following error:\" + data.errorCode);",
+							"    console.log(\"error status: \" + responseCode.Code);",
+							"}",
+							"else{",
+							"",
+							"pm.test(\"Verify status code indicates success\", function () {",
+							"    pm.expect(pm.response.code).to.eql(200);",
+							"});",
+							"",
+							"pm.test(\"Verify agreement id is returned\", function (){",
+							"   pm.expect(data.id).to.not.eql(null); ",
+							"});",
+							"",
+							"pm.test(\"Verify that the agreement is signed\", function (){",
+							"    pm.expect(signedDetails).to.not.eql(null);",
+							"});",
+							"",
+							"pm.test(\"Verify that the agreement has userEmail\", function (){",
+							"    pm.expect(signedDetails.userEmail).to.not.eql(null);",
+							"});",
+							"",
+							"pm.test(\"Verify that the agreement has firstName\", function (){",
+							"    pm.expect(signedDetails.firstName).to.not.eql(null);",
+							"});",
+							"",
+							"pm.test(\"Verify that the agreement has lastName\", function (){",
+							"    pm.expect(signedDetails.lastName).to.not.eql(null);",
+							"});",
+							"",
+							"pm.test(\"Verify that the agreement has title \", function (){",
+							"    pm.expect(signedDetails.title).to.not.eql(null);",
+							"});",
+							"",
+							"pm.test(\"Verify that the agreement has ipAddress \", function (){",
+							"    pm.expect(signedDetails.ipAddress).to.not.eql(null);",
+							"});",
+							"",
+							"pm.test(\"Verify that the agreement has signedDate \", function (){",
+							"    pm.expect(signedDetails.signedDateUTC).to.not.eql(null);",
+							"});",
+							"",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"termsId\":[1]\n}"
+				},
+				"url": {
+					"raw": "{{uas_host}}/v1/user-agreement/agreements/{{agreementId}}/sign",
+					"host": [
+						"{{uas_host}}"
+					],
+					"path": [
+						"v1",
+						"user-agreement",
+						"agreements",
+						"{{agreementId}}",
+						"sign"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Try to resign signed agreement",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5a74de80-0562-4bff-ac86-78d584270845",
+						"exec": [
+							"var errorData = JSON.parse(responseBody);",
+							"",
+							"",
+							"if(responseCode.code == 400){",
+							"    ",
+							"   pm.test(\"Verify error code for agreement already signed\", function () {",
+							"    pm.expect(errorData.errorCode).to.eql(\"agreement_already_signed\");",
+							"});",
+							"",
+							"   pm.test(\"Verify error description for agreement already signed\", function () {",
+							"    pm.expect(errorData.description).to.eql(\"Agreement has already been signed\");",
+							"});",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"termsId\":[1]\n}"
+				},
+				"url": {
+					"raw": "{{uas_host}}/v1/user-agreement/agreements/{{agreementId}}/sign",
+					"host": [
+						"{{uas_host}}"
+					],
+					"path": [
+						"v1",
+						"user-agreement",
+						"agreements",
+						"{{agreementId}}",
+						"sign"
+					]
+				},
+				"description": "Error use case"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Signed Agreement",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c08ba16b-6c89-4d60-a2d2-35fa97f383f4",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"console.log(\"The agreement id is :\" + data.id);",
+							"",
+							"if(responseCode.code !== 200){",
+							"    console.log(\"Failed with the following error:\" + data.errorCode);",
+							"    console.log(\"error status: \" + responseCode.Code);",
+							"}",
+							"else{",
+							"",
+							"pm.test(\"Verify status code indicates success\", function () {",
+							"    pm.expect(pm.response.code).to.eql(200);",
+							"});",
+							"",
+							"pm.test(\"Verify agreement id is returned\", function (){",
+							"   pm.expect(data.id).to.not.eql(null); ",
+							"});",
+							"",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{uas_host}}/v1/user-agreement/agreements/{{agreementId}}",
+					"host": [
+						"{{uas_host}}"
+					],
+					"path": [
+						"v1",
+						"user-agreement",
+						"agreements",
+						"{{agreementId}}"
+					]
+				},
+				"description": "Signed agreement should have signing details"
+			},
+			"response": []
+		},
+		{
+			"name": "Sign User Agreement without terms id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2503ea88-9bc9-49e7-a289-811165b98b88",
+						"exec": [
+							"var errorData = JSON.parse(responseBody);",
+							"",
+							"if(responseCode.code == 400){",
+							"    ",
+							"   pm.test(\"Verify error for sign agreement with no terms id \", function () {",
+							"    pm.expect(errorData.error).to.eql(\"Bad Request\");",
+							"});",
+							"",
+							"   pm.test(\"Verify message for sign agreement with no terms id \", function () {",
+							"    pm.expect(errorData.message).to.eql(\"Bad Request\");",
+							"});",
+							"",
+							"  pm.test(\"Verify status for sign agreement with no terms id \", function () {",
+							"    pm.expect(errorData.status).to.eql(400);",
+							"});",
+							"",
+							"",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{uas_host}}/v1/user-agreement/agreements/{{agreementId}}/sign",
+					"host": [
+						"{{uas_host}}"
+					],
+					"path": [
+						"v1",
+						"user-agreement",
+						"agreements",
+						"{{agreementId}}",
+						"sign"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User agreement with invalid agreement type",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "69e20807-3377-43ea-8638-7ca02d5629e3",
+						"exec": [
+							"var errorData = JSON.parse(responseBody);",
+							"",
+							"if(responseCode.code == 400){",
+							"    ",
+							"   pm.test(\"Verify error code for create agreement with invalid agreement type  \", function () {",
+							"    pm.expect(errorData.errorCode).to.eql(\"invalid_agreement_type\");",
+							"});",
+							"",
+							"   pm.test(\"Verify error description for create agreement with invalid agreement type  \", function () {",
+							"    pm.expect(errorData.description).to.eql(\"agreement type not supported\");",
+							"});",
+							"",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"type\":\"invalid_agreement_type\",\n \"context\":\"urn:ot.restaurants:1005730\"\n}"
+				},
+				"url": {
+					"raw": "{{uas_host}}/v1/user-agreement/agreements",
+					"host": [
+						"{{uas_host}}"
+					],
+					"path": [
+						"v1",
+						"user-agreement",
+						"agreements"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
