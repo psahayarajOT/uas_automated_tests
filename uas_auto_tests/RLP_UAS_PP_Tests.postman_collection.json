@@ -150,7 +150,6 @@
 							"//Verify the legalEntity exists in the response and is not null",
 							"pm.test(\"Verify agreement has legalEntity\", function () {",
 							"    pm.expect(data).to.have.property('legalEntity');",
-							"    pm.expect(data.legalEntity).not.equal(null);",
 							"});",
 							"",
 							"//Verify the createdDateUTC exists in the response and is not null",
@@ -326,7 +325,6 @@
 							"//Verify the legalEntity exists in the response and is not null",
 							"pm.test(\"Verify agreement has legalEntity\", function () {",
 							"    pm.expect(data).to.have.property('legalEntity');",
-							"    pm.expect(data.legalEntity).not.equal(null);",
 							"});",
 							"",
 							"//Verify the createdDateUTC exists in the response and is not null",
@@ -401,13 +399,13 @@
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
+						"type": "text",
+						"value": "application/json"
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
+						"type": "text",
+						"value": "Bearer {{token}}"
 					}
 				],
 				"body": {
@@ -501,7 +499,6 @@
 							"//Verify the legalEntity exists in the response and is not null",
 							"pm.test(\"Verify agreement has legalEntity\", function () {",
 							"    pm.expect(data).to.have.property('legalEntity');",
-							"    pm.expect(data.legalEntity).not.equal(null);",
 							"});",
 							"",
 							"//Verify the createdDateUTC exists in the response and is not null",
@@ -618,13 +615,13 @@
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
+						"type": "text",
+						"value": "application/json"
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
+						"type": "text",
+						"value": "Bearer {{token}}"
 					}
 				],
 				"body": {
@@ -780,7 +777,6 @@
 							"//Verify the legalEntity exists in the response and is not null",
 							"pm.test(\"Verify agreement has legalEntity\", function () {",
 							"    pm.expect(data).to.have.property('legalEntity');",
-							"    pm.expect(data.legalEntity).not.equal(null);",
 							"});",
 							"",
 							"//Verify the createdDateUTC exists in the response and is not null",
@@ -898,13 +894,13 @@
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
+						"type": "text",
+						"value": "application/json"
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
+						"type": "text",
+						"value": "Bearer {{token}}"
 					}
 				],
 				"body": {
